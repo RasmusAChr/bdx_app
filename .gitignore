@@ -51,5 +51,8 @@ captures/
 *.jks
 *.keystore
 
+# Ignore entire key folder
+key/
+
 # Google Services (e.g. APIs or Firebase)
 google-services.json
