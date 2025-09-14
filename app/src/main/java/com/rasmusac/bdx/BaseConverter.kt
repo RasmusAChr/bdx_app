@@ -1,3 +1,5 @@
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -6,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +25,7 @@ fun BaseConverter() {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionIndex by remember { mutableIntStateOf(0) }
     var input by remember { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
 
     // Parse input based on selected base
     val intValue = input.toIntOrNull(
@@ -58,7 +62,13 @@ fun BaseConverter() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(24.dp),
+                .padding(24.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    focusManager.clearFocus()
+                },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
