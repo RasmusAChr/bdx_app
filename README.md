@@ -1,7 +1,10 @@
 # BDX - Base Converter
 
 A simple and elegant Android app for converting numbers between decimal, hexadecimal, and binary bases.
-<img width="1572" height="1104" alt="cover" src="https://github.com/user-attachments/assets/358409da-6e89-46e2-b6eb-222f099b8430" />
+<br><br>
+<img width="1572" height="1104" alt="cover" src="https://github.com/user-attachments/assets/874ec3cc-cb23-4844-8001-06750b8b2d03" />
+
+
 
 ### Download
 <a href="https://play.google.com/store/apps/details?id=com.rasmusac.bdx"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></a>
