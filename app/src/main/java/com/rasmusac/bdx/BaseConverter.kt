@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun BaseConverter() {
     val options = listOf("Decimal (0d)", "Hexadecimal (0x)", "Binary (0b)")
+    val shortOptions = listOf("Decimal", "Hexadecimal", "Binary")
     val prefixes = listOf("0d", "0x", "0b")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionIndex by remember { mutableIntStateOf(0) }
@@ -86,10 +87,10 @@ fun BaseConverter() {
                         ExposedDropdownMenuBox(
                             expanded = expanded,
                             onExpandedChange = { expanded = !expanded },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1.5f)
                         ) {
                             OutlinedTextField(
-                                value = options[selectedOptionIndex],
+                                value = shortOptions[selectedOptionIndex],
                                 onValueChange = { },
                                 readOnly = true,
                                 label = { Text("Base", fontSize = 14.sp) },
@@ -99,27 +100,34 @@ fun BaseConverter() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(56.dp)
-                                    .menuAnchor(),
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                                 shape = RoundedCornerShape(12.dp),
                                 textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp),
                                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
                             )
                             ExposedDropdownMenu(
                                 expanded = expanded,
-                                onDismissRequest = { expanded = false }
+                                onDismissRequest = { expanded = false },
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .widthIn(min = 180.dp)
                             ) {
                                 options.forEachIndexed { index, option ->
                                     DropdownMenuItem(
                                         text = {
                                             Text(
                                                 text = option,
-                                                fontSize = 14.sp
+                                                fontSize = 14.sp,
+                                                softWrap = false,
+                                                maxLines = 1,
+                                                modifier = Modifier.padding(end = 8.dp)
                                             )
                                         },
                                         onClick = {
                                             selectedOptionIndex = index
                                             expanded = false
-                                        }
+                                        },
+                                        modifier = Modifier.wrapContentWidth()
                                     )
                                 }
                             }
