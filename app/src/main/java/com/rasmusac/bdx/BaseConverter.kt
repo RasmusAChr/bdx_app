@@ -1,5 +1,6 @@
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -7,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -142,7 +144,15 @@ fun BaseConverter() {
                             modifier = Modifier.weight(1.5f).height(56.dp),
                             shape = RoundedCornerShape(12.dp),
                             textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),
-                            colors = OutlinedTextFieldDefaults.colors()
+                            colors = OutlinedTextFieldDefaults.colors(),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = when (selectedOptionIndex) {
+                                    0 -> KeyboardType.Number      // Decimal
+                                    1 -> KeyboardType.Text        // Hexadecimal
+                                    2 -> KeyboardType.Number      // Binary
+                                    else -> KeyboardType.Number
+                                }
+                            )
                         )
                     }
                 }
