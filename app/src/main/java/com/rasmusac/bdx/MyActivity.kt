@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyActivity() {
-    var activeBase by remember { mutableIntStateOf(0) } // 0=decimal, 1=hex, 2=binary
+    var activeBase by remember { mutableIntStateOf(0) } // 0=decimal, 1=hex, 2=binary, 3=octal
     var currentValue by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
@@ -32,6 +32,7 @@ fun MyActivity() {
                 0 -> 10  // Decimal
                 1 -> 16  // Hex
                 2 -> 2   // Binary
+                3 -> 8   // Octal
                 else -> 10
             }
         )
@@ -39,6 +40,7 @@ fun MyActivity() {
 
     val decimal = if (activeBase == 0) currentValue else (intValue?.toString(10) ?: "")
     val hex = if (activeBase == 1) currentValue else (intValue?.toString(16)?.uppercase() ?: "")
+    val octal = if (activeBase == 3) currentValue else (intValue?.toString(8) ?: "")
     val binary = if (activeBase == 2) currentValue else (intValue?.toString(2) ?: "")
 
     // Get enabled keys based on active base
@@ -46,6 +48,7 @@ fun MyActivity() {
         0 -> listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") // Decimal
         1 -> listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F") // Hex
         2 -> listOf("0", "1") // Binary
+        3 -> listOf("0", "1", "2", "3", "4", "5", "6", "7") // Octal
         else -> listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
     }
 
@@ -76,64 +79,84 @@ fun MyActivity() {
                 ) {
                     focusManager.clearFocus()
                 },
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // Base input/output sections
+            // Base input/output sections - centered with weight
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Decimal
-                BaseInputOutputCard(
-                    label = "Decimal",
-                    prefix = "0d",
-                    value = decimal,
-                    isActive = activeBase == 0,
-                    isValid = intValue != null || currentValue.isEmpty(),
-                    onClick = {
-                        if (activeBase != 0) {
-                            activeBase = 0
-                            currentValue = decimal
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Decimal
+                    BaseInputOutputCard(
+                        label = "Decimal",
+                        prefix = "0d",
+                        value = decimal,
+                        isActive = activeBase == 0,
+                        isValid = intValue != null || currentValue.isEmpty(),
+                        onClick = {
+                            if (activeBase != 0) {
+                                activeBase = 0
+                                currentValue = decimal
+                            }
                         }
-                    }
-                )
+                    )
 
-                // Hexadecimal
-                BaseInputOutputCard(
-                    label = "Hexadecimal",
-                    prefix = "0x",
-                    value = hex,
-                    isActive = activeBase == 1,
-                    isValid = intValue != null || currentValue.isEmpty(),
-                    onClick = {
-                        if (activeBase != 1) {
-                            activeBase = 1
-                            currentValue = hex
+                    // Hexadecimal
+                    BaseInputOutputCard(
+                        label = "Hexadecimal",
+                        prefix = "0x",
+                        value = hex,
+                        isActive = activeBase == 1,
+                        isValid = intValue != null || currentValue.isEmpty(),
+                        onClick = {
+                            if (activeBase != 1) {
+                                activeBase = 1
+                                currentValue = hex
+                            }
                         }
-                    }
-                )
+                    )
 
-                // Binary
-                BaseInputOutputCard(
-                    label = "Binary",
-                    prefix = "0b",
-                    value = binary,
-                    isActive = activeBase == 2,
-                    isValid = intValue != null || currentValue.isEmpty(),
-                    onClick = {
-                        if (activeBase != 2) {
-                            activeBase = 2
-                            currentValue = binary
+                    // Octal
+                    BaseInputOutputCard(
+                        label = "Octal",
+                        prefix = "0o",
+                        value = octal,
+                        isActive = activeBase == 3,
+                        isValid = intValue != null || currentValue.isEmpty(),
+                        onClick = {
+                            if (activeBase != 3) {
+                                activeBase = 3
+                                currentValue = octal
+                            }
                         }
-                    }
-                )
+                    )
+
+                    // Binary
+                    BaseInputOutputCard(
+                        label = "Binary",
+                        prefix = "0b",
+                        value = binary,
+                        isActive = activeBase == 2,
+                        isValid = intValue != null || currentValue.isEmpty(),
+                        onClick = {
+                            if (activeBase != 2) {
+                                activeBase = 2
+                                currentValue = binary
+                            }
+                        }
+                    )
+                }
             }
 
-            // Custom Keyboard
+            // Custom Keyboard - stays at bottom
             CustomKeyboard(
                 enabledKeys = enabledKeys,
                 onKeyClick = { key ->
@@ -144,6 +167,7 @@ fun MyActivity() {
                             0 -> 10
                             1 -> 16
                             2 -> 2
+                            3-> 8
                             else -> 10
                         }
                     ) != null
