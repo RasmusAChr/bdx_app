@@ -13,9 +13,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyActivity() {
@@ -68,7 +70,6 @@ fun MyActivity() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
@@ -81,7 +82,9 @@ fun MyActivity() {
 
             // Base input/output sections
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 // Decimal
@@ -129,14 +132,6 @@ fun MyActivity() {
                     }
                 )
             }
-
-            // Show active base info
-            Text(
-                text = "Active: ${when(activeBase) { 0 -> "Decimal"; 1 -> "Hexadecimal"; 2 -> "Binary"; else -> "Unknown" }}",
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium
-            )
 
             // Custom Keyboard
             CustomKeyboard(
@@ -222,7 +217,7 @@ fun BaseInputOutputCard(
 
             SelectionContainer {
                 Text(
-                    text = if (value.isEmpty()) "$prefix..." else "$prefix$value",
+                    text = if (value.isEmpty()) prefix else "$prefix$value",
                     fontSize = 18.sp,
                     fontFamily = FontFamily.Monospace,
                     color = when {
@@ -257,7 +252,7 @@ fun CustomKeyboard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.onPrimary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp)
@@ -314,7 +309,7 @@ fun KeyboardButton(
                 modifier = Modifier.fillMaxSize(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isSpecialKey) {
-                        MaterialTheme.colorScheme.secondary
+                        MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.primary
                     },
@@ -326,9 +321,9 @@ fun KeyboardButton(
                     text = key,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
+                    maxLines = 1,
                     color = if (enabled) {
-                        if (isSpecialKey) MaterialTheme.colorScheme.onSecondary
-                        else MaterialTheme.colorScheme.onPrimary
+                        MaterialTheme.colorScheme.onPrimary
                     } else {
                         MaterialTheme.colorScheme.outline
                     }
