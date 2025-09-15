@@ -1,5 +1,6 @@
 package com.rasmusac.bdx
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -68,7 +69,8 @@ fun MyActivity() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -227,7 +229,7 @@ fun BaseInputOutputCard(
             containerColor = when {
                 !isValid -> MaterialTheme.colorScheme.errorContainer
                 isActive -> MaterialTheme.colorScheme.primaryContainer
-                else -> MaterialTheme.colorScheme.surface
+                else -> MaterialTheme.colorScheme.secondaryContainer
             }
         ),
         border = if (isActive) {
