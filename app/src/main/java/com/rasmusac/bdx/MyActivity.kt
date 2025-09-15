@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 fun MyActivity() {
     var activeBase by remember { mutableIntStateOf(0) } // 0=decimal, 1=hex, 2=binary, 3=octal
     var currentValue by remember { mutableStateOf("") }
+    var shouldResetOnNextInput by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     // Parse current value based on active base and convert to other bases
@@ -105,6 +106,7 @@ fun MyActivity() {
                             if (activeBase != 0) {
                                 activeBase = 0
                                 currentValue = decimal
+                                shouldResetOnNextInput = true
                             }
                         }
                     )
@@ -120,6 +122,7 @@ fun MyActivity() {
                             if (activeBase != 1) {
                                 activeBase = 1
                                 currentValue = hex
+                                shouldResetOnNextInput = true
                             }
                         }
                     )
@@ -135,6 +138,7 @@ fun MyActivity() {
                             if (activeBase != 3) {
                                 activeBase = 3
                                 currentValue = octal
+                                shouldResetOnNextInput = true
                             }
                         }
                     )
@@ -150,6 +154,7 @@ fun MyActivity() {
                             if (activeBase != 2) {
                                 activeBase = 2
                                 currentValue = binary
+                                shouldResetOnNextInput = true
                             }
                         }
                     )
@@ -160,8 +165,16 @@ fun MyActivity() {
             CustomKeyboard(
                 enabledKeys = enabledKeys,
                 onKeyClick = { key ->
+                    // If we should reset on next input, clear current value first
+                    val baseValue = if (shouldResetOnNextInput) {
+                        shouldResetOnNextInput = false
+                        ""
+                    } else {
+                        currentValue
+                    }
+
                     // Validate input based on active base
-                    val newValue = currentValue + key
+                    val newValue = baseValue + key
                     val isValidInput = newValue.toIntOrNull(
                         when (activeBase) {
                             0 -> 10
@@ -177,12 +190,16 @@ fun MyActivity() {
                     }
                 },
                 onDeleteClick = {
-                    if (currentValue.isNotEmpty()) {
+                    if (shouldResetOnNextInput) {
+                        shouldResetOnNextInput = false
+                        currentValue = ""
+                    } else if (currentValue.isNotEmpty()) {
                         currentValue = currentValue.dropLast(1)
                     }
                 },
                 onClearClick = {
                     currentValue = ""
+                    shouldResetOnNextInput = false
                 }
             )
         }
