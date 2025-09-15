@@ -48,11 +48,11 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 <br><br>
 
-### 🐛 Bug Reports & Feature Requests
+### Bug Reports & Feature Requests
 Found a bug or have a feature request? Please create an issue on this repository or contact through the Google Play Store.
 <br><br>
 
-### ⭐ Support
+### Support
 If you find this app useful, please consider:
 - Rating it on the Google Play Store
 - Starring this repository
